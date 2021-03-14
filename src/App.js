@@ -1,24 +1,22 @@
-import logo from './logo.svg';
-import './App.css';
+import React, {useState, useEffect} from 'react'
+import CardWrapper from '../src/CardWrapper/CardWrapper'
 
 function App() {
+  const [people, setPeople] = useState([])
+
+  useEffect(()=>{
+    fetch('https://venbest-test.herokuapp.com/.')
+    .then(response => response.json())
+    .then(people =>{setPeople(people)})
+  }, [])
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+      <div className="wrapper">
+        <CardWrapper
+          className ="wrapper"
+          people={people} 
+        />
+      </div>
   );
 }
 
