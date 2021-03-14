@@ -13,7 +13,8 @@ function App() {
   return (
       <div className="wrapper">
         <CardWrapper
-          people={ people} 
+          className ="wrapper"
+          people={people} 
         />
       </div>
   );

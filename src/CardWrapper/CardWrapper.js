@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 
 import Element from "./Element";
+import text from "./text"
 import PropTypes from "prop-types";
 
 function CardWrapper(props) {
@@ -12,16 +13,16 @@ function CardWrapper(props) {
   const [checkedMale, setCheckedMale] = useState(false);
   const [checkedFemale, setCheckedFemale] = useState(false);
   
-  const handleMaleCheckBoxClick = (e) => {
+  const handleMaleCheckBoxClick = (event) => {
     setCheckedMale(!checkedMale);
     if (!checkedMale) {
-      setPeopleSex(e.target.value);
+      setPeopleSex(event.target.value);
     } else setPeopleSex("");
   }
-  const handleFemaleCheckBoxClick = (e) => {
+  const handleFemaleCheckBoxClick = (event) => {
     setCheckedFemale(!checkedFemale);
     if (!checkedFemale) {
-      setPeopleSex(e.target.value);
+      setPeopleSex(event.target.value);
     } else setPeopleSex("");
   }
   const handleOnNameInputChange = (event) => {
@@ -37,76 +38,78 @@ function CardWrapper(props) {
 
   return (
     <div>
-      <div>
-        Имя
-        <input
-          type="text"
-          placeholder="Имя"
-          value={searchName}
-          onChange={handleOnNameInputChange}
-        />
+      <div >
+        <div className ="seach">
+          {text.name} 
+          <input
+            type="text"
+            placeholder={text.name}
+            value={searchName}
+            onChange={handleOnNameInputChange}
+          />
+        </div>
+        <div className ="seach">
+        {text.lastname} 
+          <input
+            type="text"
+            value={searchLastname}
+            onChange={handleOnLastNameInputChange}
+            placeholder={text.lastname}
+          ></input>
+        </div>
+        <div className ="seach">
+          {text.age} 
+          <input 
+          type="text" 
+          placeholder={text.age}
+          value={searchAge}
+          onChange={handleOnAgeInputChange}
+          ></input>
+        </div>
+        <div className ="seach">
+          {text.sex}
+          <input
+            type="checkbox"
+            onClick={handleMaleCheckBoxClick}
+            checked={checkedMale}
+            value="m"
+            name="Sex"
+            id="male"
+          />
+          <label htmlFor="male">{text.male}</label>
+          <input
+            type="checkbox"
+            onClick={handleFemaleCheckBoxClick}
+            checked={checkedFemale}
+            value="f"
+            name="Sex"
+            id="female"
+          />
+          <label htmlFor="female">{text.female}</label>
+          <br />
+        </div>
       </div>
-      <div>
-        Фамилия{" "}
-        <input
-          type="text"
-          value={searchLastname}
-          onChange={handleOnLastNameInputChange}
-          placeholder="Фамилия"
-        ></input>
-      </div>
-      <div>
-        Возраст 
-        <input 
-        type="text" 
-        placeholder="Возраст"
-        value={searchAge}
-        onChange={handleOnAgeInputChange}
-        ></input>
-      </div>
-      <div>
-        Пол
-        <input
-          type="checkbox"
-          onClick={handleMaleCheckBoxClick}
-          checked={checkedMale}
-          value="m"
-          name="Sex"
-          id="male"
-        />
-        <label htmlFor="male">M</label>
-        <input
-          type="checkbox"
-          onClick={handleFemaleCheckBoxClick}
-          checked={checkedFemale}
-          value="f"
-          name="Sex"
-          id="female"
-        />
-        <label htmlFor="female">F</label>
-        <br />
-      </div>
-
-      {props.people.length > 0
+    
+        {props.people.length > 0
         ? props.people.map((el, index) => {
             if (
               el.name.toLowerCase().includes(searchName) &&
               el.lastname.toLowerCase().includes(searchLastname) 
-            //   && el.age.toString().includes(searchAge)
-              
             ) {
-              if (peopleSex.length < 1) {
-                return <Element el={el} key={index} />;
-              } else if (el.sex === peopleSex) {
-                return (
-                  <Element el={el} key={index} />
-                );
-              } else if (checkedMale && checkedFemale) {
-                return <Element el={el} key={index} />;
-              }
+              if (searchAge.length === 0 || el.age === +searchAge) {
+                if (peopleSex.length < 1) {
+                    return <Element el={el} key={index} />;
+                  } else if (el.sex === peopleSex) {
+                    return (
+                      <Element el={el} key={index} />
+                    );
+                  } else if (checkedMale && checkedFemale) {
+                    return <Element el={el} key={index} />;
+                  }
+                }
             }
           })
-        : "нет пользователя с данным фильтром"}
+        : text.loading}
     </div>
   );
 }
